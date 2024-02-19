@@ -1,0 +1,300 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+input {
+    all: unset;
+
+}
+
+
+/* End Reset*/
+
+/* Variables*/
+:root {
+    --bg: #191a24;
+    --text: #fff;
+    --mainTitle: #c0c3d6;
+    --tileBgNormal: #191a24;
+    --borderNormal: #414458;
+    --borderFocus: #7b7f98;
+    --keyboardBase: #7b7f98;
+    --rightPosition: #79b851;
+    --includeLetter: #f3c237;
+    --flippedLetter: #3d4054;
+}
+
+/* End Variables*/
+
+/* Animations*/
+@keyframes letterFocus {
+    0% {
+        background-color: var(--bg)
+    }
+
+    50% {
+        background-color: var(--borderFocus)
+    }
+
+    100% {
+        background-color: var(--bg)
+    }
+}
+
+/* End Animations*/
+
+/* Layout*/
+body {
+
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    font-variant: small-caps;
+    font-size: 12px;
+    line-height: 1.3rem;
+}
+
+h1 {
+    color: var(--mainTitle);
+    font-size: 4em;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.wrapper {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 960px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 2em;
+}
+
+.row {
+    display: flex;
+    min-width: 100%;
+    justify-content: center;
+    margin-bottom: .5em;
+}
+
+.letter {
+    width: 1em;
+    height: 1em;
+    background-color: var(--tileBgNormal);
+    border: 2px solid var(--borderNormal);
+    border-radius: 5px;
+    margin-right: .1em;
+    padding: .1em;
+    font-size: 3.5em;
+    text-align: center;
+    text-transform: uppercase;
+    pointer-events: none;
+
+}
+
+.letter:focus {
+    border: 2px solid var(--borderFocus);
+    border-radius: 5px;
+    animation-duration: 1s;
+}
+
+.flipped-letter {
+    animation-name: flip;
+    animation-duration: 1s;
+    animation-delay: 0ms;
+
+}
+
+.flipped-color {
+    background-color: var(--flippedLetter);
+}
+
+.include-letter {
+    background-color: var(--includeLetter);
+}
+
+.correct-position {
+    background-color: var(--rightPosition);
+}
+
+
+
+/* End Layout*/
+
+/* Start Keyboard*/
+
+#keyboard {
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#keyboard div {
+    display: flex;
+}
+
+.second-row {
+    margin: 0.5rem 0;
+}
+
+.keyboard-button {
+    color: var(--text);
+    background-color: var(--keyboardBase);
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    margin: 0 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: ease-in-out .3s;
+
+}
+
+.keyboard-button:hover {
+    background-color: var(--mainTitle);
+    transition: ease-in-out .3s;
+}
+
+/* Animations*/
+
+@keyframes flip {
+
+    0%,
+    20% {
+        transform: rotateY(360deg);
+
+    }
+}
