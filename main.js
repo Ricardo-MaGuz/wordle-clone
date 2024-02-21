@@ -35,29 +35,45 @@ fetch(apiUrl)
     });
 
 // Event Listeners
+document.getElementById("keyboard").addEventListener("click", (e) => {
+    const target = e.target
+    if (!target.classList.contains("keyboard-button")) {
+        return
+    }
+
+    let key = target.textContent
+
+    if (key === "Delete") {
+        key = "Backspace"
+    }
+
+    document.dispatchEvent(new KeyboardEvent("keyup", { 'key': key }))
+})
 
 document.addEventListener("keyup", (e) => {
     let pressedKey = String(e.key);
     let found = pressedKey.match(/[a-zA-Z]+/g);
     if (e.code === "Backspace") {
         deleteLetter();
-
         return
     }
     if (e.code === "Enter") {
         checkWord(currentTryLetters, selectedWord);
         return
     }
-    if (!found || found.length > 1) {
+    if (found == null || found.length < 1 || found.length > 1) {
         return;
     } else {
         currentTry(tryNumber, currentTryLetters, pressedKey);
     }
 });
 
+
+
 // Declarations
 function initBoard() {
     let board = document.getElementById("word-board");
+
     for (let i = 0; i < TRIES_NUMBER; i++) {
         let row = document.createElement("div");
         row.className = "row";
@@ -88,21 +104,14 @@ function currentTry(tryNumber, currentTryLetters, pressedKey) {
     if (currentTryLetters.length === 0 && pressedKey == '') {
         currentRow.firstChild.focus()
     }
-    else if (pressedKey !== '' && currentTryLetters.length === 0) {
+    else if (pressedKey !== '' && currentTryLetters.length >= 0 && currentTryLetters.length <= 4) {
         currentTryLetters.push(pressedKey)
-        currentRow.children[currentTryLetters.length].focus()
+        if (currentTryLetters.length < 5) {
+            currentRow.children[currentTryLetters.length].focus()
+        }
     }
-    else if (currentTryLetters.length === 4) {
-        currentTryLetters.push(pressedKey)
-        return
-    }
-    else if (currentTryLetters.length === 5) {
-        return
-    }
-    else {
-        currentTryLetters.push(pressedKey)
-        currentRow.children[currentTryLetters.length].focus()
-    }
+    else return
+
 
 }
 
@@ -143,6 +152,7 @@ function checkWord(currentTryLetters, selectedWord) {
     }
     else {
         alert("Game over")
+        alert(`The right word was: ${selectedWord}`)
     }
 }
 
