@@ -238,19 +238,6 @@ h1 {
 
 }
 
-.flipped-color {
-    background-color: var(--flippedLetter);
-}
-
-.include-letter {
-    background-color: var(--includeLetter);
-}
-
-.correct-position {
-    background-color: var(--rightPosition);
-}
-
-
 
 /* End Layout*/
 
@@ -289,6 +276,19 @@ h1 {
 }
 
 /* Animations*/
+
+.flipped-color {
+    background-color: var(--flippedLetter);
+}
+
+.include-letter {
+    background-color: var(--includeLetter);
+}
+
+.correct-position {
+    background-color: var(--rightPosition);
+}
+
 
 @keyframes flip {
 

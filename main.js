@@ -7,6 +7,9 @@ let selectedWord = words[wordId]
 let currentTryString = ""
 let selectedArr = []
 
+// Enable Screen Keyboard
+// Change keys background if the letter is found
+
 // API Call
 const apiUrl = 'https://wordle-api.cyclic.app/words';
 
@@ -24,7 +27,6 @@ fetch(apiUrl)
     .then(words => {
         wordId = Math.floor(Math.random() * words.length)
         selectedWord = words[wordId]
-        console.log(selectedWord)
         return selectedWord
     })
     .catch(error => {
@@ -36,7 +38,7 @@ fetch(apiUrl)
 
 document.addEventListener("keyup", (e) => {
     let pressedKey = String(e.key);
-    let found = pressedKey.match(/^[a-zA-Z]+$/);
+    let found = pressedKey.match(/[a-zA-Z]+/g);
     if (e.code === "Backspace") {
         deleteLetter();
 
@@ -53,9 +55,7 @@ document.addEventListener("keyup", (e) => {
     }
 });
 
-
 // Declarations
-
 function initBoard() {
     let board = document.getElementById("word-board");
     for (let i = 0; i < TRIES_NUMBER; i++) {
@@ -82,7 +82,6 @@ function initBoard() {
 
     currentTry(tryNumber, currentTryLetters, "");
 }
-
 
 function currentTry(tryNumber, currentTryLetters, pressedKey) {
     let currentRow = document.getElementsByClassName('row')[tryNumber];
@@ -122,7 +121,6 @@ function deleteLetter() {
     }
 }
 
-
 function checkWord(currentTryLetters, selectedWord) {
     currentTryString = currentTryLetters.join("")
     selectedArr = selectedWord.word.split("")
@@ -135,7 +133,7 @@ function checkWord(currentTryLetters, selectedWord) {
         restartGame()
     }
     else if (wordFinded === false) {
-        alert("La palabra no existe compa")
+        alert("La palabra no esta en la lista compa")
     }
     else if (wordFinded === true && tryNumber < TRIES_NUMBER - 1) {
         checkLetters(currentTryLetters, selectedArr, tryNumber)
@@ -154,11 +152,16 @@ function findWord(currentTryString) {
     return index !== -1 ? true : false
 }
 
-
 function checkLetters(currentTryLetters, selectedArr, tryNumber) {
     let currentRow = document.getElementsByClassName('row')[tryNumber];
+    const keys = Array.from(document.querySelectorAll('.keyboard-button'));
     for (let i = 0; i < currentTryLetters.length; i++) {
         currentRow.children[i].classList.add("flipped-letter")
+        keys.find(el => {
+            if (el.innerHTML == currentTryLetters[i]) {
+                el.classList.add("flipped-color")
+            }
+        });
         setTimeout(() => {
             currentRow.children[i].classList.add("flipped-color");
         }, 500);
@@ -166,12 +169,22 @@ function checkLetters(currentTryLetters, selectedArr, tryNumber) {
             setTimeout(() => {
                 currentRow.children[i].classList.add("correct-position");
             }, 500);
+            keys.find(el => {
+                if (el.innerHTML == currentTryLetters[i]) {
+                    el.classList.add("correct-position")
+                }
+            });
         }
         for (let j = 0; j < selectedArr.length; j++) {
             if (currentTryLetters[i] == selectedArr[j]) {
                 setTimeout(() => {
                     currentRow.children[i].classList.add("include-letter");
                 }, 500);
+                keys.find(el => {
+                    if (el.innerHTML == currentTryLetters[i]) {
+                        el.classList.add("incluide-letter")
+                    }
+                });
             }
         }
     }
@@ -193,12 +206,6 @@ function restartGame() {
     return selectedWord
 }
 
-
 // Calls
-
-
 initBoard()
-
-
-
 
