@@ -213,7 +213,11 @@ function restartGame() {
     let firstRow = document.getElementsByClassName('row')[0];
     const addedClasses = ['include-letter', 'correct-position', 'flipped-color', "flipped-letter"];
     const inputs = document.querySelectorAll(".letter")
+    const keys = document.querySelectorAll(".keyboard-button")
     inputs.forEach(element => {
+        element.classList.remove(...addedClasses);
+    });
+    keys.forEach(element => {
         element.classList.remove(...addedClasses);
     });
     wordId = Math.floor(Math.random() * words.length)
