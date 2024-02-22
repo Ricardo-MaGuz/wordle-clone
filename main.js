@@ -7,8 +7,10 @@ let selectedWord = words[wordId]
 let currentTryString = ""
 let selectedArr = []
 
-// Enable Screen Keyboard
-// Change keys background if the letter is found
+// To Dos
+// Correct delete on click bug
+// Evaluate global variables
+
 
 // API Call
 const apiUrl = 'https://wordle-api.cyclic.app/words';
@@ -20,19 +22,16 @@ fetch(apiUrl)
         }
         return response.json();
     })
-    .then(data => {
+    .then((data) => {
         words = data
-        return words
-    })
-    .then(words => {
         wordId = Math.floor(Math.random() * words.length)
-        selectedWord = words[wordId]
-        return selectedWord
+        return selectedWord = words[wordId]
     })
     .catch(error => {
         console.error('Error:', error);
         alert("There was an error with the wordle API")
     });
+
 
 // Event Listeners
 document.getElementById("keyboard").addEventListener("click", (e) => {
@@ -40,19 +39,25 @@ document.getElementById("keyboard").addEventListener("click", (e) => {
     if (!target.classList.contains("keyboard-button")) {
         return
     }
-
     let key = target.textContent
-
     if (key === "Delete") {
         key = "Backspace"
     }
+    if (key === "Backspace") {
+        deleteLetter();
+        return
+    }
+    if (key === "Enter") {
+        checkWord(currentTryLetters, selectedWord);
+        return
+    }
 
-    document.dispatchEvent(new KeyboardEvent("keyup", { 'key': key }))
+    document.dispatchEvent(new KeyboardEvent("keydown", { 'key': key }))
 })
 
-document.addEventListener("keyup", (e) => {
+document.addEventListener("keydown", (e) => {
     let pressedKey = String(e.key);
-    let found = pressedKey.match(/[a-zA-Z]+/g);
+    let found = pressedKey.match(/^[a-zA-Z]$/);
     if (e.code === "Backspace") {
         deleteLetter();
         return
@@ -61,7 +66,7 @@ document.addEventListener("keyup", (e) => {
         checkWord(currentTryLetters, selectedWord);
         return
     }
-    if (found == null || found.length < 1 || found.length > 1) {
+    if (!found) {
         e.stopPropagation()
         e.preventDefault()
         return;
@@ -69,8 +74,6 @@ document.addEventListener("keyup", (e) => {
         currentTry(tryNumber, currentTryLetters, pressedKey);
     }
 });
-
-
 
 // Declarations
 function initBoard() {
@@ -84,11 +87,6 @@ function initBoard() {
             let letter = document.createElement("input");
             letter.className = "letter";
             letter.maxLength = '1';
-            letter.addEventListener('keydown', function (e) {
-                if (e.code == "Tab" || e.code == "Space") {
-                    e.preventDefault();
-                }
-            });
             letter.addEventListener('click', function (e) {
                 e.preventDefault();
             });
@@ -97,7 +95,6 @@ function initBoard() {
 
         board.appendChild(row);
     }
-
     currentTry(tryNumber, currentTryLetters, "");
 }
 
@@ -106,27 +103,35 @@ function currentTry(tryNumber, currentTryLetters, pressedKey) {
     if (currentTryLetters.length === 0 && pressedKey == '') {
         currentRow.firstChild.focus()
     }
-    else if (pressedKey !== '' && currentTryLetters.length >= 0 && currentTryLetters.length <= 4) {
-        currentTryLetters.push(pressedKey)
-        if (currentTryLetters.length < 5) {
-            currentRow.children[currentTryLetters.length].focus()
+    else if (pressedKey !== '') {
+        if (currentTryLetters.length > 4) {
+            currentRow.children[currentTryLetters.length - 1].focus()
+            return
         }
+        currentRow.children[currentTryLetters.length].focus()
+        currentRow.children[currentTryLetters.length].value = pressedKey
+        currentTryLetters.push(pressedKey)
+        console.log(currentTryLetters)
     }
+
     else return
 }
 
 function deleteLetter() {
     const currentRow = document.getElementsByClassName('row')[tryNumber];
-    const previousInput = currentRow.children[currentTryLetters.length - 2];
-
+    const previousInput = currentRow.children[currentTryLetters.length - 1];
     if (currentTryLetters.length <= 1) {
+        currentRow.firstChild.value = ""
         currentTryLetters.pop();
         currentRow.firstChild.focus()
+        console.log(currentTryLetters)
         return;
     }
     else {
+        // currentRow.children[currentTryLetters.length].value = ""
         previousInput.focus()
         currentTryLetters.pop();
+        console.log(currentTryLetters)
     }
 }
 
@@ -138,11 +143,11 @@ function checkWord(currentTryLetters, selectedWord) {
         return
     }
     else if (currentTryString == selectedWord.word) {
-        alert("Ganaste perro, juega de nuevo")
+        alert("You win! Want to try again?")
         restartGame()
     }
     else if (wordFinded === false) {
-        alert("La palabra no esta en la lista compa")
+        alert("Sorry we don't have that word")
     }
     else if (wordFinded === true && tryNumber < TRIES_NUMBER - 1) {
         checkLetters(currentTryLetters, selectedArr, tryNumber)
@@ -160,7 +165,7 @@ function checkWord(currentTryLetters, selectedWord) {
 function findWord(currentTryString) {
     const wordsArray = words.map(obj => obj.word);
     const index = wordsArray.indexOf(currentTryString);
-    return index !== -1 ? true : false
+    return index !== -1
 }
 
 function checkLetters(currentTryLetters, selectedArr, tryNumber) {
@@ -182,6 +187,7 @@ function checkLetters(currentTryLetters, selectedArr, tryNumber) {
             }, 500);
             keys.find(el => {
                 if (el.innerHTML == currentTryLetters[i]) {
+                    el.classList.remove("flipped-color")
                     el.classList.add("correct-position")
                 }
             });
@@ -193,7 +199,8 @@ function checkLetters(currentTryLetters, selectedArr, tryNumber) {
                 }, 500);
                 keys.find(el => {
                     if (el.innerHTML == currentTryLetters[i]) {
-                        el.classList.add("incluide-letter")
+                        el.classList.remove("flipped-color")
+                        el.classList.add("include-letter")
                     }
                 });
             }
