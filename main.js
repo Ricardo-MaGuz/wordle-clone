@@ -4,12 +4,10 @@ let currentTryLetters = []
 let words = []
 let wordId = 0
 let selectedWord = words[wordId]
-let currentTryString = ""
 let selectedArr = []
 
 // To Dos
 // Evaluate global variables
-
 
 // API Call
 const apiUrl = 'https://wordle-api.cyclic.app/words';
@@ -24,6 +22,7 @@ fetch(apiUrl)
     .then((data) => {
         words = data
         wordId = Math.floor(Math.random() * words.length)
+        console.log(words[wordId])
         return selectedWord = words[wordId]
     })
     .catch(error => {
@@ -50,7 +49,6 @@ document.getElementById("keyboard").addEventListener("click", (e) => {
         checkWord(currentTryLetters, selectedWord);
         return
     }
-
     document.dispatchEvent(new KeyboardEvent("keydown", { 'key': key }))
 })
 
@@ -131,20 +129,25 @@ function deleteLetter() {
 }
 
 function checkWord(currentTryLetters, selectedWord) {
-    currentTryString = currentTryLetters.join("")
+    let currentTryString = currentTryLetters.join("")
     selectedArr = selectedWord.word.split("")
-    let wordFinded = findWord(currentTryString)
+    let foundWord = findWord(currentTryString)
     if (currentTryLetters.length < 5) {
         return
     }
     else if (currentTryString == selectedWord.word) {
-        alert("You win! Want to try again?")
+        for (let i = 0; i < currentTryLetters.length; i++) {
+            currentRow.children.classList.add("flipped-letter")
+            paintInput(currentRow, i, "correct-position", 500)
+        }
+        alert("You win! The right word was: ${selectedWord.word} ")
+        alert("Want to try again?")
         restartGame()
     }
-    else if (wordFinded === false) {
+    else if (!foundWord) {
         alert("Sorry we don't have that word")
     }
-    else if (wordFinded && tryNumber < TRIES_NUMBER - 1) {
+    else if (foundWord && tryNumber < TRIES_NUMBER - 1) {
         checkLetters(currentTryLetters, selectedArr, tryNumber)
         tryNumber += 1
         document.getElementsByClassName('row')[tryNumber].firstChild.focus();
