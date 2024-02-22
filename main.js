@@ -81,7 +81,6 @@ function initBoard() {
     for (let i = 0; i < TRIES_NUMBER; i++) {
         let row = document.createElement("div");
         row.className = "row";
-
         for (let j = 0; j < 5; j++) {
             let letter = document.createElement("input");
             letter.className = "letter";
@@ -99,10 +98,10 @@ function initBoard() {
 
 function currentTry(tryNumber, currentTryLetters, pressedKey) {
     let currentRow = document.getElementsByClassName('row')[tryNumber];
-    if (currentTryLetters.length === 0 && pressedKey == '') {
+    if (!currentTryLetters.length && !pressedKey) {
         currentRow.firstChild.focus()
     }
-    else if (pressedKey !== '') {
+    else if (pressedKey) {
         if (currentTryLetters.length > 4) {
             currentRow.children[currentTryLetters.length - 1].focus()
             return
@@ -146,7 +145,7 @@ function checkWord(currentTryLetters, selectedWord) {
     else if (wordFinded === false) {
         alert("Sorry we don't have that word")
     }
-    else if (wordFinded === true && tryNumber < TRIES_NUMBER - 1) {
+    else if (wordFinded && tryNumber < TRIES_NUMBER - 1) {
         checkLetters(currentTryLetters, selectedArr, tryNumber)
         tryNumber += 1
         document.getElementsByClassName('row')[tryNumber].firstChild.focus();
