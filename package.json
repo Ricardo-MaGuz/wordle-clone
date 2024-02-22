@@ -1,0 +1,26 @@
+{
+  "name": "wordle",
+  "version": "1.0.0",
+  "description": "A Wordle clone using vanilla js",
+  "main": "main.js",
+  "scripts": {
+    "test": "wordle-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ricardo-MaGuz/wordle-clone.git"
+  },
+  "keywords": [
+    "Javascript",
+    "Wordle"
+  ],
+  "author": "Ricardo MaGuz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ricardo-MaGuz/wordle-clone/issues"
+  },
+  "homepage": "https://github.com/Ricardo-MaGuz/wordle-clone#readme",
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}

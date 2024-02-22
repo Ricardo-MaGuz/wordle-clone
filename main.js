@@ -6,7 +6,7 @@ let wordId = 0
 let selectedWord = words[wordId]
 
 // To Dos
-// Evaluate global variables
+// Add Readme
 
 // API Call
 const apiUrl = 'https://wordle-api.cyclic.app/words';
