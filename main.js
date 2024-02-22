@@ -62,6 +62,8 @@ document.addEventListener("keyup", (e) => {
         return
     }
     if (found == null || found.length < 1 || found.length > 1) {
+        e.stopPropagation()
+        e.preventDefault()
         return;
     } else {
         currentTry(tryNumber, currentTryLetters, pressedKey);
@@ -111,8 +113,6 @@ function currentTry(tryNumber, currentTryLetters, pressedKey) {
         }
     }
     else return
-
-
 }
 
 function deleteLetter() {
@@ -152,7 +152,8 @@ function checkWord(currentTryLetters, selectedWord) {
     }
     else {
         alert("Game over")
-        alert(`The right word was: ${selectedWord}`)
+        alert(`The right word was: ${selectedWord.word}`)
+        restartGame()
     }
 }
 
