@@ -8,7 +8,6 @@ let currentTryString = ""
 let selectedArr = []
 
 // To Dos
-// Correct delete on click bug
 // Evaluate global variables
 
 
@@ -124,14 +123,12 @@ function deleteLetter() {
         currentRow.firstChild.value = ""
         currentTryLetters.pop();
         currentRow.firstChild.focus()
-        console.log(currentTryLetters)
         return;
     }
     else {
-        // currentRow.children[currentTryLetters.length].value = ""
+        previousInput.value = ""
         previousInput.focus()
         currentTryLetters.pop();
-        console.log(currentTryLetters)
     }
 }
 
