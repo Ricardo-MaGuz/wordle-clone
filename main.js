@@ -4,7 +4,6 @@ let currentTryLetters = []
 let words = []
 let wordId = 0
 let selectedWord = words[wordId]
-let selectedArr = []
 
 // To Dos
 // Evaluate global variables
@@ -130,19 +129,24 @@ function deleteLetter() {
 
 function checkWord(currentTryLetters, selectedWord) {
     let currentTryString = currentTryLetters.join("")
-    selectedArr = selectedWord.word.split("")
+    let selectedArr = selectedWord.word.split("")
     let foundWord = findWord(currentTryString)
     if (currentTryLetters.length < 5) {
         return
     }
     else if (currentTryString == selectedWord.word) {
+        const currentRow = document.getElementsByClassName('row')[tryNumber];
         for (let i = 0; i < currentTryLetters.length; i++) {
-            currentRow.children.classList.add("flipped-letter")
+            currentRow.children[i].classList.add("flipped-letter")
             paintInput(currentRow, i, "correct-position", 500)
         }
-        alert("You win! The right word was: ${selectedWord.word} ")
-        alert("Want to try again?")
-        restartGame()
+        setTimeout(() => {
+            alert(`You win! The right word was: ${selectedWord.word}`)
+            alert("Want to try again?")
+            restartGame()
+        }, 1000);
+
+
     }
     else if (!foundWord) {
         alert("Sorry we don't have that word")
