@@ -109,7 +109,6 @@ function currentTry(tryNumber, currentTryLetters, pressedKey) {
         currentRow.children[currentTryLetters.length].focus()
         currentRow.children[currentTryLetters.length].value = pressedKey
         currentTryLetters.push(pressedKey)
-        console.log(currentTryLetters)
     }
 
     else return
@@ -168,21 +167,15 @@ function checkLetters(currentTryLetters, selectedArr, tryNumber) {
     let currentRow = document.getElementsByClassName('row')[tryNumber];
     for (let i = 0; i < currentTryLetters.length; i++) {
         currentRow.children[i].classList.add("flipped-letter")
-        setTimeout(() => {
-            currentRow.children[i].classList.add("flipped-color");
-        }, 500);
+        paintInput(currentRow, i, "flipped-color", 500)
         paintKeyboard(currentTryLetters[i], "", "flipped-color")
         if (currentTryLetters[i] == selectedArr[i]) {
-            setTimeout(() => {
-                currentRow.children[i].classList.add("correct-position");
-            }, 500);
+            paintInput(currentRow, i, "correct-position", 500)
             paintKeyboard(currentTryLetters[i], "flipped-color", "correct-position")
         }
         for (let j = 0; j < selectedArr.length; j++) {
             if (currentTryLetters[i] == selectedArr[j]) {
-                setTimeout(() => {
-                    currentRow.children[i].classList.add("include-letter");
-                }, 500);
+                paintInput(currentRow, i, "include-letter", 500)
                 paintKeyboard(currentTryLetters[i], "flipped-color", "include-letter")
             }
         }
@@ -193,7 +186,6 @@ function paintKeyboard(letter, removeClass, addClass) {
     const keys = Array.from(document.querySelectorAll('.keyboard-button'));
     keys.find(el => {
         if (el.innerHTML == letter) {
-            console.log(letter, removeClass, addClass)
             if (removeClass) {
                 el.classList.remove(removeClass)
                 el.classList.add(addClass)
@@ -202,6 +194,12 @@ function paintKeyboard(letter, removeClass, addClass) {
             }
         }
     });
+}
+
+function paintInput(currentRow, index, addClass, delay) {
+    setTimeout(() => {
+        currentRow.children[index].classList.add(addClass);
+    }, delay);
 }
 
 function restartGame() {
