@@ -166,42 +166,42 @@ function findWord(currentTryString) {
 
 function checkLetters(currentTryLetters, selectedArr, tryNumber) {
     let currentRow = document.getElementsByClassName('row')[tryNumber];
-    const keys = Array.from(document.querySelectorAll('.keyboard-button'));
     for (let i = 0; i < currentTryLetters.length; i++) {
         currentRow.children[i].classList.add("flipped-letter")
-        keys.find(el => {
-            if (el.innerHTML == currentTryLetters[i]) {
-                el.classList.add("flipped-color")
-            }
-        });
         setTimeout(() => {
             currentRow.children[i].classList.add("flipped-color");
         }, 500);
+        paintKeyboard(currentTryLetters[i], "", "flipped-color")
         if (currentTryLetters[i] == selectedArr[i]) {
             setTimeout(() => {
                 currentRow.children[i].classList.add("correct-position");
             }, 500);
-            keys.find(el => {
-                if (el.innerHTML == currentTryLetters[i]) {
-                    el.classList.remove("flipped-color")
-                    el.classList.add("correct-position")
-                }
-            });
+            paintKeyboard(currentTryLetters[i], "flipped-color", "correct-position")
         }
         for (let j = 0; j < selectedArr.length; j++) {
             if (currentTryLetters[i] == selectedArr[j]) {
                 setTimeout(() => {
                     currentRow.children[i].classList.add("include-letter");
                 }, 500);
-                keys.find(el => {
-                    if (el.innerHTML == currentTryLetters[i]) {
-                        el.classList.remove("flipped-color")
-                        el.classList.add("include-letter")
-                    }
-                });
+                paintKeyboard(currentTryLetters[i], "flipped-color", "include-letter")
             }
         }
     }
+}
+
+function paintKeyboard(letter, removeClass, addClass) {
+    const keys = Array.from(document.querySelectorAll('.keyboard-button'));
+    keys.find(el => {
+        if (el.innerHTML == letter) {
+            console.log(letter, removeClass, addClass)
+            if (removeClass) {
+                el.classList.remove(removeClass)
+                el.classList.add(addClass)
+            } else {
+                el.classList.add(addClass)
+            }
+        }
+    });
 }
 
 function restartGame() {
